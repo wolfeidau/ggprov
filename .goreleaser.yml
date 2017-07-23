@@ -1,0 +1,10 @@
+# .goreleaser.yml
+# Build customization
+builds:
+  - main: ./cmd/gg-config/main.go
+    binary: gg-config
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64

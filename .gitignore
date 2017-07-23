@@ -1,0 +1,6 @@
+*.yaml
+build/
+dist/
+vendor
+coverage.txt
+*.tar.gz
