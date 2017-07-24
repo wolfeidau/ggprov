@@ -67,7 +67,7 @@ func (ss *SSHSession) CopyPath(filePath, destinationPath string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer DoClose(f)
 	s, err := f.Stat()
 	if err != nil {
 		return err
@@ -82,17 +82,18 @@ func (ss *SSHSession) copy(size int64, mode os.FileMode, fileName string, conten
 		return errors.Wrap(err, "Failed to create session for copy")
 	}
 
-	defer session.Close()
+	defer DoClose(session)
 	go func() {
 		w, _ := session.StdinPipe()
-		defer w.Close()
+		defer DoClose(w)
 		fmt.Fprintf(w, "C%#o %d %s\n", mode, size, fileName)
-		io.Copy(w, contents)
+		_, err = io.Copy(w, contents)
+		if err != nil {
+			return
+		}
 		fmt.Fprint(w, "\x00")
 	}()
 	cmd := fmt.Sprintf("scp -t %s", destination)
-	if err := session.Run(cmd); err != nil {
-		return err
-	}
-	return nil
+
+	return session.Run(cmd)
 }

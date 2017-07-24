@@ -25,14 +25,14 @@ func DownloadFromURL(url, targetPath string) error {
 		return errors.Wrap(err, "Failed to create file")
 	}
 
-	defer output.Close()
+	defer DoClose(output)
 
 	response, err := http.Get(url)
 	if err != nil {
 		return errors.Wrap(err, "Failed to download file")
 	}
 
-	defer response.Body.Close()
+	defer DoClose(response.Body)
 
 	n, err := io.Copy(output, response.Body)
 	if err != nil {

@@ -27,7 +27,7 @@ func main() {
 		log.Fatalf("%+v\n", err)
 	}
 
-	defer ss.Client.Close()
+	defer ggprov.DoClose(ss.Client)
 
 	sourcePath := fmt.Sprintf("%s.yaml", *ggName)
 

@@ -1,6 +1,11 @@
 package ggprov
 
-import "github.com/aws/aws-sdk-go/aws/awserr"
+import (
+	"io"
+	"log"
+
+	"github.com/aws/aws-sdk-go/aws/awserr"
+)
 
 func isNotFoundErr(err error) bool {
 	return isAwsReqErrStatusCode(err, 404)
@@ -14,4 +19,12 @@ func isAwsReqErrStatusCode(err error, statusCode int) bool {
 		}
 	}
 	return false
+}
+
+// DoClose close the "closer" and log any errors
+func DoClose(output io.Closer) {
+	err := output.Close()
+	if err != nil {
+		log.Println("Failed to close http output", err)
+	}
 }

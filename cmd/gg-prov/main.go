@@ -8,8 +8,7 @@ import (
 )
 
 var (
-	ggName      = kingpin.Arg("name", "Name of greengrass core.").Required().String()
-	ggBoardUser = kingpin.Flag("username", "Username used to access board.").String()
+	ggName = kingpin.Arg("name", "Name of greengrass core.").Required().String()
 )
 
 func main() {
