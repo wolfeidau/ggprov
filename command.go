@@ -35,10 +35,33 @@ func UserExist(username string) (bool, error) {
 	return true, nil
 }
 
-// NewSystemUserAndGroup create a new system user and group
-func NewSystemUserAndGroup(username string) error {
+// GroupExist check if group exists on the system
+func GroupExist(groupname string) (bool, error) {
+	err := RunCommand("getent", []string{"group", groupname})
+	if err != nil {
+		if exitError, ok := err.(*ExitError); ok {
+			if exitError.ExitCode == 2 {
+				return false, nil
+			}
+		}
+		return false, err
+	}
+
+	return true, nil
+}
+
+// NewSystemUser create a new system user
+func NewSystemUser(username string) error {
 	cmdName := "useradd"
-	cmdArgs := []string{"--system", "--no-create-home", "--user-group", username}
+	cmdArgs := []string{"--system", "--no-create-home", username}
+
+	return RunCommand(cmdName, cmdArgs)
+}
+
+// NewSystemGroup create a new system group
+func NewSystemGroup(groupname string) error {
+	cmdName := "groupadd"
+	cmdArgs := []string{"--system", groupname}
 
 	return RunCommand(cmdName, cmdArgs)
 }
