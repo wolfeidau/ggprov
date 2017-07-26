@@ -128,14 +128,13 @@ func main() {
 		log.Fatalf("%+v\n", err)
 	}
 
-	err = ggprov.RunCommand("apt", []string{"update"})
+	err = ggprov.AptUpdate()
 	if err != nil {
 		log.Fatalf("%+v\n", err)
 	}
 
-	err = ggprov.RunCommand("apt", []string{"install", "-y", "sqlite3"})
+	err = ggprov.AptInstall([]string{"sqlite3"})
 	if err != nil {
 		log.Fatalf("%+v\n", err)
 	}
-
 }
