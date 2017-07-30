@@ -98,7 +98,7 @@ func main() {
 
 	tarPath := path.Join("/home", ggLoginUser, ggTarFile)
 
-	err = ggprov.RunCommand("tar", []string{"xvf", tarPath, "-C", "/"})
+	err = ggprov.RunCommand("tar", []string{"xf", tarPath, "-C", "/"})
 	if err != nil {
 		log.Fatalf("%+v\n", err)
 	}
